@@ -11,14 +11,17 @@ department_id INT PRIMARY KEY AUTO_INCREMENT,
 department_name VARCHAR(100) NOT NULL UNIQUE
 );
 
+
 CREATE TABLE IF NOT EXISTS visits (
 visit_id INT PRIMARY KEY AUTO_INCREMENT,
 patient_id INT NOT NULL,
 department_id INT NOT NULL,
-visit_date DATE NOT NULL,
+visit_date DATE NOT NULL DEFAULT (CURRENT_DATE),
 visit_type VARCHAR(50) NOT NULL,
 FOREIGN KEY (patient_id)
     REFERENCES patients(patient_id),
 FOREIGN KEY (department_id)
     REFERENCES departments(department_id)
 );
+
+
