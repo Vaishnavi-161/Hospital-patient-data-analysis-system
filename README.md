@@ -19,11 +19,11 @@ The system uses synthetic patient data for analysis and demonstration purposes.
 
 ## Technologies Used
 
-* Frontend: HTML, CSS, JavaScript
-* Backend: Python, Flask
-* Database: MySQL
-* Data Analysis: Pandas, NumPy
-* Visualisation: Matplotlib
+* **Frontend:** HTML, CSS, JavaScript
+* **Backend:** Python, Flask
+* **Database:** MySQL
+* **Data Analysis:** Pandas, NumPy
+* **Visualisation:** Matplotlib
 
 ## Project Structure
 
