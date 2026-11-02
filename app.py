@@ -7,8 +7,21 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 app = Flask(__name__)
+
+secret_key = os.environ.get("FLASK_SECRET_KEY")
+
+if os.environ.get("RENDER") and not secret_key:
+    raise RuntimeError("FLASK_SECRET_KEY must be configured.")
+
+app.secret_key = secret_key or "dev-only-change-this"
+
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=bool(os.environ.get("RENDER"))
+)
+
 csrf = CSRFProtect(app)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-only-change-this")
 # Protect pages that require login
 def login_required(route_function):
     @wraps(route_function)
@@ -352,29 +365,29 @@ def add_visit():
 
     connection = None
     cursor = None
-    # Verify patient exists
-    cursor.execute(
-        "SELECT patient_id FROM patients WHERE patient_id = %s",
-        (int(patient_id),)
-    )
-
-    if cursor.fetchone() is None:
-        flash("Selected patient does not exist.", "error")
-        return redirect(url_for("visits"))
-
-    # Verify department exists
-    cursor.execute(
-        "SELECT department_id FROM departments WHERE department_id = %s",
-        (int(department_id),)
-    )
-
-    if cursor.fetchone() is None:
-        flash("Selected department does not exist.", "error")
-        return redirect(url_for("visits"))
 
     try:
         connection = get_db_connection()
         cursor = connection.cursor()
+        # Verify patient exists
+        cursor.execute(
+            "SELECT patient_id FROM patients WHERE patient_id = %s",
+            (int(patient_id),)
+        )
+
+        if cursor.fetchone() is None:
+            flash("Selected patient does not exist.", "error")
+            return redirect(url_for("visits"))
+
+        # Verify department exists
+        cursor.execute(
+            "SELECT department_id FROM departments WHERE department_id = %s",
+            (int(department_id),)
+        )
+
+        if cursor.fetchone() is None:
+            flash("Selected department does not exist.", "error")
+            return redirect(url_for("visits"))
 
         cursor.execute("""
             INSERT INTO visits
@@ -437,29 +450,29 @@ def edit_visit(visit_id):
 
     connection = None
     cursor = None
-    # Verify patient exists
-    cursor.execute(
-        "SELECT patient_id FROM patients WHERE patient_id = %s",
-        (int(patient_id),)
-    )
-
-    if cursor.fetchone() is None:
-        flash("Selected patient does not exist.", "error")
-        return redirect(url_for("visits"))
-
-    # Verify department exists
-    cursor.execute(
-        "SELECT department_id FROM departments WHERE department_id = %s",
-        (int(department_id),)
-    )
-
-    if cursor.fetchone() is None:
-        flash("Selected department does not exist.", "error")
-        return redirect(url_for("visits"))
 
     try:
         connection = get_db_connection()
         cursor = connection.cursor()
+        # Verify patient exists
+        cursor.execute(
+            "SELECT patient_id FROM patients WHERE patient_id = %s",
+            (int(patient_id),)
+        )
+
+        if cursor.fetchone() is None:
+            flash("Selected patient does not exist.", "error")
+            return redirect(url_for("visits"))
+
+        # Verify department exists
+        cursor.execute(
+            "SELECT department_id FROM departments WHERE department_id = %s",
+            (int(department_id),)
+        )
+
+        if cursor.fetchone() is None:
+            flash("Selected department does not exist.", "error")
+            return redirect(url_for("visits"))
 
         cursor.execute("""
             SELECT visit_id FROM visits WHERE visit_id = %s
@@ -546,6 +559,7 @@ def delete_visit(visit_id):
 def dashboard():
     main()
     connection = None
+    cursor = None
     try:
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
@@ -567,8 +581,10 @@ def dashboard():
         )
 
     finally:
-        if connection is not None and connection.is_connected():
+        if cursor is not None:
             cursor.close()
+
+        if connection is not None and connection.is_connected():
             connection.close()
 
 # Patient demographics page
@@ -820,7 +836,8 @@ def login():
 
     return render_template("login.html")
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
+@login_required
 def logout():
     session.clear()
     flash("You have been logged out successfully.", "success")
@@ -869,4 +886,4 @@ def profile():
 
 # Run the application
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
