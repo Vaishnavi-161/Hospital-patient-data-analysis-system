@@ -3,7 +3,8 @@ USE hospital_db;
 CREATE TABLE IF NOT EXISTS patients (
 patient_id INT PRIMARY KEY AUTO_INCREMENT,
 age_band VARCHAR(20) NOT NULL,
-gender_optional VARCHAR(20)
+gender_optional VARCHAR(20),
+blood_group VARCHAR(10) NULL
 );
 
 CREATE TABLE IF NOT EXISTS departments (
