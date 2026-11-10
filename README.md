@@ -6,6 +6,10 @@ MediTrack is a web-based Hospital Patient Data Analysis System developed using P
 
 The system uses synthetic patient data for analysis and demonstration purposes.
 
+## Live Demo
+
+**Project Link:** https://meditrack-wk50.onrender.com
+
 ## Features
 
 * User registration and login
@@ -25,7 +29,7 @@ The system uses synthetic patient data for analysis and demonstration purposes.
 * **Data Analysis:** Pandas, NumPy
 * **Visualisation:** Matplotlib
 
-📁## Project Structure
+## 📁Project Structure
 
 * `app.py` – Main Flask application
 * `database.py` – Database connection
@@ -124,14 +128,8 @@ After successfully starting the application, open your web browser and navigate 
 
 The MediTrack application is now ready to use.
 
-👥## Team Members
+## 👥Team Members
 
-Team member	Role
-Ipparla Vaishnavi	Integration & Testing
-Golla Krishna Jhansi	Backend Development
-Bathalapalli Hasini	Frontend Development
-Mandhalapu Giridhar Naidu	Data Analysis & Visualization
-Dudekula Sujith Vali	Database Management
 <img width="619" height="363" alt="image" src="https://github.com/user-attachments/assets/3bd25a99-3755-45ea-870d-5e5f0c5f8494" />
 
 ## My Contributions
