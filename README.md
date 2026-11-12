@@ -63,7 +63,7 @@ git clone https://github.com/Vaishnavi-161/Hospital-patient-data-analysis-system
 Navigate to the project directory:
 
 ```bash
-cd MediTrack
+cd Hospital-patient-data-analysis-system
 ```
 
 ### 2. Create a Virtual Environment
